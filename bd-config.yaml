@@ -1,7 +1,0 @@
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: bd-config
-  namespace: bd
-data:
-  db-url: bd-service
