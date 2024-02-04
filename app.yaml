@@ -19,6 +19,9 @@ spec:
         image: system.registry.eneci.net/app-test
         ports:
         - containerPort: 8080
+        env:
+        - name: DB_URL
+          value: db-service
 
 ---
 
