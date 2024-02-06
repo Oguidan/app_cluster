@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: config
+  name: db-config
   namespace: app
 data:
-  db-url: "postgresql://user:password@postgresql-service.db.svc.cluster.local:<port>/<database>"
+  db-url: db-service

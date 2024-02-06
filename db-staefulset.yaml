@@ -1,19 +1,19 @@
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
-  name: postgresql
+  name: db-staefulset
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: postgresql
+      app: db
   template:
     metadata:
       labels:
-        app: postgresql
+        app: db
     spec:
       containers:
-      - name: postgresql
+      - name: db
         image: postgres:14-alpine
         ports:
         - containerPort: 5432
