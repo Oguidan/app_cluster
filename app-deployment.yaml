@@ -1,7 +1,8 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: app
+  name: app-deployment
+  namespace: app
   labels:
     app: app
 spec:
@@ -20,5 +21,24 @@ spec:
         ports:
         - containerPort: 8080
         env:
-        - name: DB_URL
-          value: db-service
+        - name: POSTGRES_DB
+          value: mydatabase
+        - name: POSTGRES_HOST
+          valueFrom:
+            configMapKeyRef:
+              name: app-config
+              key: db-url
+        - name: POSTGRES_PORT
+          value: "5432"
+        - name: POSTGRES_USER
+          valueFrom:
+            secretKeyRef:
+              name: app-secret
+              key: db-user
+        - name: POSTGRES_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: app-secret
+              key: db-password
+      imagePullSecrets:
+      - name: regcred
