@@ -1,14 +1,28 @@
-apiVersion: v1
+apiVersion: v1 # This line sets the API version to v1, which is the base API version for Kubernetes.
 kind: Service
+# This line declares that the kind of resource being defined is a Service.
+# A Service provides a stable IP address and DNS name for a set of Pods, enabling load balancing and service discovery.
 metadata:
+# This block contains data that helps the Service, such as its name and namespace.
   name: app-service
+  # This line sets the name of the Service to app-service.
   namespace: app
+  # This line sets the namespace in which the Service will be created. Namespaces are a way to divide cluster resources between multiple users.
 spec:
+# This block contains the specifications for the Service.
   type: NodePort
+  # This line sets the type of Service to NodePort. NodePort Services expose the Service on each Node's IP at a static port (the NodePort), enabling inbound connections from outside the cluster.
   selector:
+  # This block specifies the label selectors that determine which Pods the Service routes traffic to.
     app: app
+    # This line selects Pods with the label app: app.
   ports:
+  # This block specifies the ports that the Service listens on.
     - protocol: TCP
+    # This line sets the protocol for the port to TCP.
       port: 8080
+      # This line sets the port number for the Service to 8080.
       targetPort: 8080
+      # This line sets the port number that the Service forwards requests to on the Pods to 8080.
       nodePort: 30100
+      # This line sets the NodePort to 30100. This is the port that the Service will be accessible on from outside the cluster.
