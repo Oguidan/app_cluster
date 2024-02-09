@@ -1,8 +1,19 @@
+# This YAML file defines a Kubernetes Secret resource.
+# Secrets are used to store sensitive information, such as passwords, OAuth tokens, and SSH keys.
 apiVersion: v1
 data:
+  # The 'data' field stores the actual secret data, encoded in base64 format.
+  # Here, the '.dockerconfigjson' key holds the base64-encoded Docker config JSON data.
   .dockerconfigjson: eyJhdXRocyI6eyJzeXN0ZW0ucmVnaXN0cnkuZW5lY2kubmV0Ijp7InVzZXJuYW1lIjoiZGF0YTM1NHRlc3QiLCJwYXNzd29yZCI6IjJqWWRrM0c5IiwiYXV0aCI6IlpHRjBZVE0xTkhSbGMzUTZNbXBaWkdzelJ6az0ifX19
 kind: Secret
+# The 'kind' field specifies the type of Kubernetes resource being defined.
+# Here, it's a 'Secret' resource.
 metadata:
+  # The 'metadata' field contains data that helps define the Secret resource.
   name: app-reg
+    # The 'name' key sets the name of the Secret.
   namespace: app
+    # The 'namespace' key sets the namespace for the Secret.
 type: kubernetes.io/dockerconfigjson
+# The 'type' field specifies the type of data stored in the Secret.
+# Here, it's a Docker config JSON data.
