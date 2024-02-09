@@ -1,48 +1,68 @@
-apiVersion: apps/v1
-kind: StatefulSet
+# apiVersion defines the version of the Kubernetes API to use for this resource
+apiVersion: apps/v1 # Use the v1 version of the Apps API
+# kind specifies the type of Kubernetes resource to create
+# kind specifies the type of Kubernetes resource to create
+kind: StatefulSet # Create a StatefulSet resource
+# The metadata block contains data that helps define the StatefulSet
 metadata:
-  name: db-statefulset
-  namespace: db
+  name: db-statefulset # The name of the StatefulSet
+  namespace: db # The name of the StatefulSet
+  # spec contains the configuration details for the StatefulSet
 spec:
+  # The selector block defines how the StatefulSet finds which Pods to manage
   selector:
-    matchLabels:
-      app: db
+    matchLabels: # Use label selectors to identify Pods
+      app: db # The Pods must have a label with key "app" and value "db"
+  # serviceName is the name of the headless service that the StatefulSet will use
   serviceName: "db-service"
-  replicas: 1
-  minReadySeconds: 10
+    # replicas specifies the desired number of replicas (Pods) for the StatefulSet
+  replicas: 1 # Desire 1 replica (Pod) for the StatefulSet
+    # minReadySeconds sets the minimum number of seconds for a Pod to be considered ready
+  minReadySeconds: 10 # Wait 10 seconds before considering a Pod ready
+    # The template block defines the Pod template for the StatefulSet
   template:
+    # The metadata block contains data that helps define the Pod template
     metadata:
-      labels:
-        app: db
+      labels: # Define a label for the Pod template
+        app: db # The Pods created from this template will have a label with key "app" and value "db"
+    # spec contains the container and volume specifications for the Pod template
     spec:
-      terminationGracePeriodSeconds: 10
+          # terminationGracePeriodSeconds sets the time to wait before forcefully killing a Pod
+      terminationGracePeriodSeconds: 10 # Wait 10 seconds before forcefully killing a Pod
+      # The containers block defines the containers that will run in the Pods
       containers:
-      - name: db
-        image: postgres:14-alpine
+      - name: db #  The name of the container
+        image: postgres:14-alpine # The Docker image to use for the container
         ports:
-        - containerPort: 5432
+        - containerPort: 5432 # The container will expose port 5432
+        # The env block defines environment variables for the container
         env:
-        - name: POSTGRES_DB
-          value: mydatabase
-        - name: POSTGRES_USER
-          valueFrom:
-            secretKeyRef:
-              name: db-secret
-              key: db-user
-        - name: POSTGRES_PASSWORD
-          valueFrom:
-            secretKeyRef:
-              name: db-secret
-              key: db-password
+        - name: POSTGRES_DB # The name of the environment variable
+          value: mydatabase # The value of the environment variable
+        - name: POSTGRES_USER # The name of the environment variable
+          valueFrom: # Get the value from a Kubernetes Secret
+            secretKeyRef: # Define the Secret and key to use
+              name: db-secret # The name of the Secret
+              key: db-user # The key in the Secret
+        - name: POSTGRES_PASSWORD # The name of the environment variable
+          valueFrom: # Get the value from a Kubernetes Secret
+            secretKeyRef: # Define the Secret and key to use
+              name: db-secret # The name of the Secret
+              key: db-password # The key in the Secret
+        # The volumeMounts block defines the volumes that the container will mount
         volumeMounts:
-        - name: postgresql
-          mountPath: /var/lib/postgresql/data
+        - name: postgresql # The name of the volume
+          mountPath: /var/lib/postgresql/data # The mount path in the container
+  # volumeClaimTemplates block defines the volumes that the Pods will use
   volumeClaimTemplates:
   - metadata:
-      name: postgresql
+      name: postgresql # The name of the volume
     spec:
-      accessModes: [ "ReadWriteOnce" ]
-      storageClassName: "standard"
+    # accessModes specifies the access modes for the volume
+      accessModes: [ "ReadWriteOnce" ] # The volume will be mounted in "ReadWriteOnce" mode
+      # storageClassName specifies the StorageClass to use for the volume
+      storageClassName: "standard" # Use the "standard" StorageClass
+      # resources block defines the storage resources for the volume
       resources:
         requests:
-          storage: 1Gi
+          storage: 1Gi # Request 1Gi of storage for the volume
