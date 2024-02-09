@@ -1,44 +1,77 @@
 apiVersion: apps/v1
+# Defines the API version that this object uses. In this case, it's using the apps/v1 version.
 kind: Deployment
+# Defines the type of Kubernetes resource that this configuration represents. Here, it's a Deployment.
 metadata:
+# Contains data that helps define the Deployment, such as its name, namespace, and labels.
   name: app-deployment
+  # Defines the name of the Deployment.
   namespace: app
+  # Defines the namespace in which the Deployment will be created.
   labels:
+  # Contains key-value pairs that describe the Deployment.
     app: app
+    # Defines a label with the key "app" and the value "app".
 spec:
+# Contains the specifications for the Deployment, such as the number of replicas, the container image, and the environment variables.
   replicas: 1
+  # Defines the number of replicas (i.e., instances) of the application that should be running.
   selector:
+  # Defines a label selector that identifies which Pods belong to the Deployment.
     matchLabels:
+    # Contains a map of labels that the selected Pods must have.
       app: app
+      # Defines a label with the key "app" and the value "app".
   template:
+  # Defines the template for creating Pods.
     metadata:
+    # Contains data that helps define the Pod, such as its labels.
       labels:
+      # Contains key-value pairs that describe the Pod.
         app: app
+        # Defines a label with the key "app" and the value "app".
     spec:
+    # Contains the specifications for the Pod, such as the containers, environment variables, and image pull secrets.
       containers:
+      # Contains an array of container specifications.
       - name: app
+      # Defines a container with the name "app".
         image: system.registry.eneci.net/app-test
+        # Defines the container image as "system.registry.eneci.net/app-test".
         ports:
+        # Contains an array of ports that the container listens on.
         - containerPort: 8080
+        # Defines a port with the number 8080 that the container listens on.
         env:
+        # Contains an array of environment variables for the container.
         - name: POSTGRES_DB
           value: mydatabase
+          # Defines an environment variable named "POSTGRES_DB" with the value "mydatabase".
         - name: POSTGRES_HOST
           valueFrom:
             configMapKeyRef:
+            # Defines a reference to a ConfigMap key for the value of the environment variable.
               name: app-config
               key: db-url
+              # Specifies the name of the ConfigMap ("app-config") and the key of the value ("db-url").
         - name: POSTGRES_PORT
           value: "5432"
+          # Defines an environment variable named "POSTGRES_PORT" with the value "5432".
         - name: POSTGRES_USER
           valueFrom:
             secretKeyRef:
+            # Defines a reference to a Secret key for the value of the environment variable.
               name: app-secret
               key: db-user
+              # Specifies the name of the Secret ("app-secret") and the key of the value ("db-user").
         - name: POSTGRES_PASSWORD
           valueFrom:
             secretKeyRef:
+            # Defines a reference to a Secret key for the value of the environment variable.
               name: app-secret
               key: db-password
+              # Specifies the name of the Secret ("app-secret") and the key of the value ("db-password").
       imagePullSecrets:
+      # Contains an array of image pull secrets for the Pod.
       - name: regcred
+      # Defines an image pull secret named "regcred".
