@@ -1,4 +1,8 @@
+# This is a Kubernetes configuration file for creating a Namespace resource.
+# A Namespace is a logical partition of objects within a single cluster.
+# It's a way to divide cluster resources between multiple users or teams.
 apiVersion: v1
-kind: Namespace
-metadata:
-  name: app
+kind: Namespace # The type of resource being created. In this case, it's a Namespace.
+
+metadata: # Metadata contains data that helps define the object, like its name.
+  name: app # The name of the Namespace. In this case, it's "app".
