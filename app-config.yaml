@@ -1,7 +1,10 @@
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: app-config
-  namespace: app
-data:
-  db-url: db-service.db.svc.cluster.local
+# This is a Kubernetes ConfigMap resource definition. A ConfigMap is a Kubernetes object used to store non-confidential data in key-value pairs. Pods can consume the data stored in a ConfigMap as configuration data.
+apiVersion: v1 The API version that this configuration is written for. In this case, it is version 1 of the Kubernetes API.
+kind: ConfigMap # The kind of Kubernetes object that this configuration defines. In this case, it is a ConfigMap.
+
+metadata: # Metadata contains data that helps define the configuration.
+ name: app-config # The name of the ConfigMap. In this case, it is 'app-config'.
+ namespace: app # The namespace where the ConfigMap will be created. In this case, it is 'app'.
+
+data: # The data section contains the key-value pairs that will be stored in the ConfigMap.
+ db-url: db-service.db.svc.cluster.local # A key-value pair where the key is 'db-url' and the value is the URL of the database service. This value will be accessible to Pods that consume this ConfigMap as configuration data.
